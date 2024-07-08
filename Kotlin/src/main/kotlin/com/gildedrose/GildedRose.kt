@@ -9,16 +9,20 @@ class GildedRose(var items: List<Item>) {
         }
     }
 
-    private fun Item.nextQuality() = when (name) {
-        AGED_BRIE -> when {
+    private fun Item.nextQuality() = when {
+        name == AGED_BRIE -> when {
             sellIn < 0 -> quality + 2
             else -> quality + 1
         }
-        BACKSTAGE_PASSES -> when {
+        name == BACKSTAGE_PASSES -> when {
             sellIn < 0 -> 0
             sellIn < 5 -> quality + 3
             sellIn < 10 -> quality + 2
             else -> quality + 1
+        }
+        name.startsWith(CONJURED_PREFIX) -> when {
+            sellIn < 0 -> quality - 4
+            else -> quality - 2
         }
         else -> when {
             sellIn < 0 -> quality - 2
@@ -33,6 +37,7 @@ class GildedRose(var items: List<Item>) {
         private const val AGED_BRIE = "Aged Brie"
         private const val BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert"
         private const val SULFURAS = "Sulfuras, Hand of Ragnaros"
+        private const val CONJURED_PREFIX = "Conjured"
 
         private const val MIN_QUALITY = 0
         private const val MAX_QUALITY = 50
